@@ -1,0 +1,40 @@
+<p>viz-track works!</p>
+<button id="playIt" *ngIf="!started" (click)="playIt()">Start</button>
+<button id="stopIt" *ngIf="!paused && started" (click)="stopIt()">Pause</button>
+<button id="resumeIt" *ngIf="paused && started" (click)="resumeIt()">Resume</button>
+<br>
+<!--<button id="checkFrequencies" (click)="checkFrequencies()">Check</button>-->
+
+<div class="row">
+<div class="viewer col-10 mx-auto">
+    <div id="bars-set">
+        <div id="bar1" class="bars" [ngStyle]="{height: getHeights(0)}"></div>
+        <div id="bar2" class="bars" [ngStyle]="{height: getHeights(1)}"></div>
+        <div id="bar3" class="bars" [ngStyle]="{height: getHeights(2)}"></div>
+        <div id="bar4" class="bars" [ngStyle]="{height: getHeights(3)}"></div>
+        <div id="bar5" class="bars" [ngStyle]="{height: getHeights(4)}"></div>
+        <div id="bar6" class="bars" [ngStyle]="{height: getHeights(5)}"></div>
+        <div id="bar7" class="bars" [ngStyle]="{height: getHeights(6)}"></div>
+        <div id="bar8" class="bars" [ngStyle]="{height: getHeights(7)}"></div>
+        <div id="bar9" class="bars" [ngStyle]="{height: getHeights(8)}"></div>
+        <div id="bar10" class="bars" [ngStyle]="{height: getHeights(9)}"></div>
+        <div id="bar11" class="bars" [ngStyle]="{height: getHeights(10)}"></div>
+        <div id="bar12" class="bars" [ngStyle]="{height: getHeights(11)}"></div>
+        <div id="bar13" class="bars" [ngStyle]="{height: getHeights(12)}"></div>
+        <div id="bar14" class="bars" [ngStyle]="{height: getHeights(13)}"></div>
+        <div id="bar15" class="bars" [ngStyle]="{height: getHeights(14)}"></div>
+        <div id="bar16" class="bars" [ngStyle]="{height: getHeights(15)}"></div>
+    </div>
+</div>
+</div>
+
+<div class="row">
+    <div class="viewer-2 col-8 mx-auto">
+        <ul class="list-group">
+            <app-viz-bars *ngFor="let data of datas; let i = index"
+                [index]="i"
+                [value]="data">
+            </app-viz-bars>
+        </ul>
+    </div>
+</div>
