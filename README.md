@@ -11,3 +11,5 @@ In order to mock an API I decided to get some mp3 live streaming and use the Web
 I choose not to use a <canvas> element to draw the graphics repeatedly and prefered to manage everything with my Angular template because it was more related to my subject – that way each bar is really evolving according to the value received when it occurs, not "blindly" recreated with all the others while an update function loops – and I also thought it was a funny practice...
 
 To be continued (both README and project)
+
+![Screenshots](./Picture.png)
