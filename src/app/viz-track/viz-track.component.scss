@@ -1,34 +1,93 @@
-#bars-set {
-    
+@font-face {
+    font-family: 'Belligerent-Madness';
+    src:url('../../assets/fonts/Belligerent-Madness.ttf.woff') format('woff'),
+        url('../../assets/fonts/Belligerent-Madness.ttf.svg#Belligerent-Madness') format('svg'),
+        url('../../assets/fonts/Belligerent-Madness.ttf.eot'),
+        url('../../assets/fonts/Belligerent-Madness.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+  }
+
+h1 {
+    color: aquamarine;
+    font-family: 'Belligerent-Madness';
+    font-size: 2rem;
+}
+
+.controls {
+    min-height: 200px;
+}
+
+#bars-set {    
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
 }
 
 .viewer {
-    height: 260px;
     max-width: 95%;
     margin: auto;
     display: flex;
     flex-direction: column-reverse;
 }
 
+.viewing {
+    height: 270px;
+}
+
 .bars {
-    width:5%;
-    //height: 150px;
+    width: 2.8vw;
     background-color: green;
     align-self: baseline;
     border-radius: 5px;
 }
 
-
-
-
 .viewer-2 {
     height: 260px;    
         ul {   
         display: flex;
-        list-style: none;
-        padding-left: 0px;
+        flex-direction: row;
+        justify-content: space-around;
         }
 }
+
+button {
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    text-align: center;
+    font-weight: 600;
+    background-color: rgb(61, 164, 193);
+    height: 30px;
+    color: whitesmoke;
+}
+
+p {
+    font-weight: 400;
+    font-family: Georgia;
+    color: rgb(61, 125, 210);
+    font-size: 0.8rem;
+}
+
+#message-source {
+    margin-top: 20px;
+    min-height: 40px;
+}
+
+input {
+    background-color: rgb(53, 53, 53);
+}
+
+.moving-down {
+    animation: godown 1000ms ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes godown {
+    0% {
+      transform: translateY(130px);
+    }
+    100% {
+      transform: translateY(260px);
+    }
+  }

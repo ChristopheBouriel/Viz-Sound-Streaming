@@ -16,12 +16,10 @@ export class IncomingDatasSimulatorService {
   constructor( private audioService: AudioService ) { }
 
   emitDatasSubject() {
-    this.datas$.next(this.datas);
-    
+    this.datas$.next(this.datas);    
   }
 
-  checkFrequencies() {
-    
+  checkFrequencies() {    
       this.state$.subscribe(
         (state:boolean) => {
           if (state === true && this.streaming === true) {
