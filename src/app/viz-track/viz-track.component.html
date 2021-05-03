@@ -11,16 +11,20 @@
             <div id="message-source">
                 <button id="playIt" class="col-12 mx-auto" *ngIf="sourceForm.valid" (click)="playIt()">Start streaming</button>            
                 <p class="text-center" *ngIf="sourceForm.get('source').errors?.pattern">Please enter a valid URL</p>
+                
             </div>
         </form>
 
-        <div class="row mt-5">
+        <div class="row mt-5" *ngIf="!errorMsg">
             <div class="row col-8 mx-auto justify-content-center">            
                 <button id="stopIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="!paused && started" (click)="stopIt()">Pause</button>
                 <button id="resumeIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="paused && started" (click)="resumeIt()">Resume</button>
             </div>
         </div>
+
+        <p class="text-center mt-5" *ngIf="errorMsg">{{errorMsg}}</p>
     </div>
+    
     <div class="row my-4" [ngClass]="{'moving-down': goDown === true}">
     <div class="viewer col-10 mx-auto" [ngClass]="{'viewing': goDown === false && started === true}">
         <div id="bars-set">

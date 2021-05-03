@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export class AudioService {
   analyser
   tailleMemoireTampon
   tableauDonnees
+  error$ = new BehaviorSubject<boolean>(false)
 
   constructor() { }
 
@@ -16,6 +18,7 @@ export class AudioService {
     const context = new AudioContext();
     this.audio.crossOrigin = 'anonymous';
     this.analyser = context.createAnalyser();
+    console.log(typeof this.analyser)
     const sourceAudio = context.createMediaElementSource(this.audio);
     sourceAudio.connect(this.analyser);
     sourceAudio.connect(context.destination);
@@ -25,6 +28,7 @@ export class AudioService {
     };
     const errorHandler = e => {
       console.error('Error', e);
+      this.error$.next(true);
       this.audio.removeEventListener('error', errorHandler);
     };
     this.audio.addEventListener('canplaythrough', playHandler, false);

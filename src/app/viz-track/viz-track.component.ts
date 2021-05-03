@@ -14,7 +14,7 @@ export class VizTrackComponent implements OnInit {
   started: boolean;
   paused: boolean;
   datas: number[];
-
+  errorMsg: string;
   goDown: boolean;
 
   sourceForm: FormGroup;
@@ -33,12 +33,27 @@ export class VizTrackComponent implements OnInit {
       (datas:number[]) => {
         this.datas = datas;
       }
-    )
+    );
     
     this.sourceForm = this.formBuilder.group({
       source: new FormControl(null, [Validators.required, Validators.pattern('^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?')])
-    })
-}
+    });
+
+    this.audioService.error$.subscribe(
+      (error: boolean) => {
+        if (error) {
+          this.errorMsg = 'Sorry, the access to this stream has been blocked, please refresh the page and try an other URL';
+        }
+      }
+    )
+  }
+
+  /*ngDoCheck() {
+    if (this.audioService.error === true) {
+      this.errorMsg = 'Unable to access this stream, please refresh the page and try an other URL';
+    }
+    console.log('hook')
+  }*/
 
   playIt() {
     const source = this.sourceForm.get('source').value;
@@ -47,9 +62,11 @@ export class VizTrackComponent implements OnInit {
         this.audioService.playStream(source);
         this.ids.checkFrequencies();
         this.goDown = false;
+        
       },1200);
     this.started = true;
-    this.goDown = true
+    this.goDown = true;
+    
   }
 
   stopIt() {

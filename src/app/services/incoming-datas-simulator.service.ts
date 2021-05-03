@@ -22,7 +22,7 @@ export class IncomingDatasSimulatorService {
   checkFrequencies() {    
       this.state$.subscribe(
         (state:boolean) => {
-          if (state === true && this.streaming === true) {
+          if (state === true && this.streaming === true && !this.audioService.error$.value) {
             this.state$.next(false);
             setTimeout(
             () => {
