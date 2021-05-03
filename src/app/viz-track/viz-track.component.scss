@@ -84,6 +84,21 @@ input {
     background-color: rgb(53, 53, 53);
 }
 
+.tendance {
+    display: flex;
+    justify-content: space-around;
+    color: rgb(149, 0, 255);
+    font-size: x-large;
+    font-weight: 700;
+    padding: 1%;
+}
+
+.lines {
+    width: 2.8vw;
+    margin: 1%;
+
+}
+
 .moving-down {
     animation: godown 1000ms ease-in-out;
     animation-fill-mode: forwards;

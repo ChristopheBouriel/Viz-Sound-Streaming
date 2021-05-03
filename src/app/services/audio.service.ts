@@ -18,7 +18,6 @@ export class AudioService {
     const context = new AudioContext();
     this.audio.crossOrigin = 'anonymous';
     this.analyser = context.createAnalyser();
-    console.log(typeof this.analyser)
     const sourceAudio = context.createMediaElementSource(this.audio);
     sourceAudio.connect(this.analyser);
     sourceAudio.connect(context.destination);

@@ -17,7 +17,7 @@
 
         <div class="row mt-5" *ngIf="!errorMsg">
             <div class="row col-8 mx-auto justify-content-center">            
-                <button id="stopIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="!paused && started" (click)="stopIt()">Pause</button>
+                <button id="stopIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="!paused && started" (click)="pauseIt()">Pause</button>
                 <button id="resumeIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="paused && started" (click)="resumeIt()">Resume</button>
             </div>
         </div>
@@ -58,4 +58,25 @@
             </ul>
         </div>
     </div>
+
+    <div class="row tendance col-10 mx-auto mb-5">
+        <div id="line1" class="lines" >{{t1}}</div>
+        <div id="line2" class="lines">{{t2}}</div>
+        <div id="line3" class="lines">{{t3}}</div>
+        <div id="line4" class="lines">{{t4}}</div>
+        <div id="line5" class="lines">{{t5}}</div>
+        <div id="line6" class="lines">{{t6}}</div>
+        <div id="line7" class="lines">{{t7}}</div>
+        <div id="line8" class="lines">{{t8}}</div>
+        <div id="line9" class="lines">{{t9}}</div>
+        <div id="line10" class="lines">{{t10}}</div>
+        <div id="line11" class="lines">{{t11}}</div>
+        <div id="line12" class="lines">{{t12}}</div>
+        <div id="line13" class="lines">{{t13}}</div>
+        <div id="line14" class="lines">{{t14}}</div>
+        <div id="line15" class="lines">{{t15}}</div>
+        <div id="line16" class="lines">{{t16}}</div>    
+    </div>
+
+
 </div>
