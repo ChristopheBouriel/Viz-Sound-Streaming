@@ -6,11 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AudioService {  
 
-  audio = new Audio();
-  analyser
-  tailleMemoireTampon
-  tableauDonnees
-  error$ = new BehaviorSubject<boolean>(false)
+  private audio = new Audio();  
+  private tailleMemoireTampon: number;
+  
+  tableauDonnees;
+  analyser;
+
+  error$ = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 

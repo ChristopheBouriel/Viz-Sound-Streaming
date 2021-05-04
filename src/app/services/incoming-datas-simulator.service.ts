@@ -1,6 +1,5 @@
-import { splitClasses } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { AudioService } from './audio.service'
 
 @Injectable({
@@ -10,11 +9,6 @@ export class IncomingDatasSimulatorService {
 
   state$ = new BehaviorSubject<boolean>(true);
   datas$ = new Subject<number[]>();
-
-  count = 0;
-  cacheLastThree = [];
-  datasForCache = [];
-  lastTendancy = [];
 
   t1$= new Subject<number>();
   t2$= new Subject<number>();
@@ -33,17 +27,20 @@ export class IncomingDatasSimulatorService {
   t15$= new Subject<number>();
   t16$= new Subject<number>();
 
-  //currentSubject: string;
-
   streaming: boolean=true;
 
   private datas: number[];
+  private count: number = 0;
+  private cacheLastThree = [];
+  private datasForCache = [];
+  private lastTendancy = [];
+
 
   constructor( private audioService: AudioService ) { }
 
-  emitDatasSubject() {
+  /*emitDatasSubject() {
     this.datas$.next(this.datas);
-  }
+  }*/
 
   checkFrequencies() {    
       this.state$.subscribe(
@@ -55,8 +52,9 @@ export class IncomingDatasSimulatorService {
               this.audioService.analyser.getByteFrequencyData(this.audioService.tableauDonnees);
               //console.log(this.audioService.tableauDonnees);
               this.datas = this.audioService.tableauDonnees;
-              this.datasForCache = [...this.datas];
-              this.emitDatasSubject();
+              this.datasForCache = [...this.datas]; //
+              //this.emitDatasSubject();
+              this.datas$.next(this.datas);
               this.cacheLastThree.push(this.datasForCache);
               this.count = this.count + 1;
               if (this.count > 3) {                
@@ -72,7 +70,6 @@ export class IncomingDatasSimulatorService {
   }
 
   checkTendancy() {
-
     let tendancy = []
     for (let i=0; i<16; i++) {
       if (this.cacheLastThree[0][i] > this.cacheLastThree[1][i] && this.cacheLastThree[1][i] > this.cacheLastThree[2][i]) {
@@ -84,13 +81,13 @@ export class IncomingDatasSimulatorService {
       }      
     }
 
-      for (let i=0; i<16; i++) {
-        if (tendancy[i] !== this.lastTendancy[i]) {
-          let currentSubject = 'this.t' + (i + 1) + '$.next(tendancy[i])';
-          eval(currentSubject);
-          console.log(i + ' changed')
-        }
+    for (let i=0; i<16; i++) {
+      if (tendancy[i] !== this.lastTendancy[i]) {
+        let currentSubject = 'this.t' + (i + 1) + '$.next(tendancy[i])';
+        eval(currentSubject);
+        //console.log(i + ' changed')
       }
+    }
 
      /* if (tendancy[0] !== this.lastTendancy[0]) {
         this.t1$.next(tendancy[0]);

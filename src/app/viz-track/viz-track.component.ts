@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AudioService } from '../services/audio.service';
 import { IncomingDatasSimulatorService } from '../services/incoming-datas-simulator.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { newArray } from '@angular/compiler/src/util';
-
 
 @Component({
   selector: 'app-viz-track',
@@ -111,201 +109,113 @@ export class VizTrackComponent implements OnInit {
     return this.datas[bar] + 5 + 'px';    
   }
 
+  checkTend(tend) {
+    if (tend === -1) {
+          return '\\'
+        } else if (tend === 1) {
+          return '/'
+        } else {
+          return '–'
+        }  
+  }
+
   getSubscriptions() {
+
     this.ids.t1$.subscribe(
       (tend: number) => {
-        if (tend === -1) {
-          this.t1 = '\\'
-        } else if (tend === 1) {
-          this.t1 = '/'
-        } else {
-          this.t1 = '–'
-        }        
+        this.t1 = this.checkTend(tend);      
       }
     )
 
     this.ids.t2$.subscribe(
       (tend: number) => {
-        if (tend === -1) {
-          this.t2 = '\\'
-        } else if (tend === 1) {
-          this.t2 = '/'
-        } else {
-          this.t2 = '–'
-        }        
+        this.t2 = this.checkTend(tend);
       }
     )
 
     this.ids.t3$.subscribe(
       (tend: number) => {
-        if (tend === -1) {
-          this.t3 = '\\'
-        } else if (tend === 1) {
-          this.t3 = '/'
-        } else {
-          this.t3 = '–'
-        }        
+        this.t3 = this.checkTend(tend);
       }
     )
 
     this.ids.t4$.subscribe(
       (tend: number) => {
-        if (tend === -1) {
-          this.t4 = '\\'
-        } else if (tend === 1) {
-          this.t4 = '/'
-        } else {
-          this.t4 = '–'
-        }        
+        this.t4 = this.checkTend(tend); 
       }
     )
 
     this.ids.t5$.subscribe(
       (tend: number) => {
-        if (tend === -1) {
-          this.t5 = '\\'
-        } else if (tend === 1) {
-          this.t5 = '/'
-        } else {
-          this.t5 = '–'
-        }        
+        this.t5 = this.checkTend(tend);    
       }
     )
 
     this.ids.t6$.subscribe(
       (tend: number) => {
-        if (tend === -1) {
-          this.t6 = '\\'
-        } else if (tend === 1) {
-          this.t6 = '/'
-        } else {
-          this.t6 = '–'
-        }        
+        this.t6 = this.checkTend(tend);  
+      }
+    )  
+
+    this.ids.t7$.subscribe(
+      (tend: number) => {
+        this.t7 = this.checkTend(tend);  
       }
     )
-  
 
-  this.ids.t7$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t7 = '\\'
-      } else if (tend === 1) {
-        this.t7 = '/'
-      } else {
-        this.t7 = '–'
-      }        
-    }
-  )
+    this.ids.t8$.subscribe(
+      (tend: number) => {
+        this.t8 = this.checkTend(tend);    
+      }
+    )
 
+    this.ids.t9$.subscribe(
+      (tend: number) => {
+        this.t9 = this.checkTend(tend);
+      }
+    )
 
-  this.ids.t8$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t8 = '\\'
-      } else if (tend === 1) {
-        this.t8 = '/'
-      } else {
-        this.t8 = '–'
-      }        
-    }
-  )
+    this.ids.t10$.subscribe(
+      (tend: number) => {
+        this.t10 = this.checkTend(tend);
+      }
+    )
 
-  this.ids.t9$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t9 = '\\'
-      } else if (tend === 1) {
-        this.t9 = '/'
-      } else {
-        this.t9 = '–'
-      }        
-    }
-  )
+    this.ids.t11$.subscribe(
+      (tend: number) => {
+        this.t11 = this.checkTend(tend); 
+      }
+    )
 
-  this.ids.t10$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t10 = '\\'
-      } else if (tend === 1) {
-        this.t10 = '/'
-      } else {
-        this.t10 = '–'
-      }        
-    }
-  )
+    this.ids.t12$.subscribe(
+      (tend: number) => {
+        this.t12 = this.checkTend(tend);  
+      }
+    )
 
-  this.ids.t11$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t11 = '\\'
-      } else if (tend === 1) {
-        this.t11 = '/'
-      } else {
-        this.t11 = '–'
-      }        
-    }
-  )
+    this.ids.t13$.subscribe(
+      (tend: number) => {
+        this.t13 = this.checkTend(tend);
+      }
+    )
 
-  this.ids.t12$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t12 = '\\'
-      } else if (tend === 1) {
-        this.t12 = '/'
-      } else {
-        this.t12 = '–'
-      }        
-    }
-  )
+    this.ids.t14$.subscribe(
+      (tend: number) => {
+        this.t14 = this.checkTend(tend);  
+      }
+    )
 
-  this.ids.t13$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t13 = '\\'
-      } else if (tend === 1) {
-        this.t13 = '/'
-      } else {
-        this.t13 = '–'
-      }        
-    }
-  )
+    this.ids.t15$.subscribe(
+      (tend: number) => {
+        this.t15 = this.checkTend(tend); 
+      }
+    )
 
-  this.ids.t14$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t14 = '\\'
-      } else if (tend === 1) {
-        this.t14 = '/'
-      } else {
-        this.t14 = '–'
-      }        
-    }
-  )
-
-  this.ids.t15$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t15 = '\\'
-      } else if (tend === 1) {
-        this.t15 = '/'
-      } else {
-        this.t15 = '–'
-      }        
-    }
-  )
-
-  this.ids.t16$.subscribe(
-    (tend: number) => {
-      if (tend === -1) {
-        this.t16 = '\\'
-      } else if (tend === 1) {
-        this.t16 = '/'
-      } else {
-        this.t16 = '–'
-      }        
-    }
-  )
-
+    this.ids.t16$.subscribe(
+      (tend: number) => {
+        this.t16 = this.checkTend(tend);   
+      }
+    )
  
   }
 }
