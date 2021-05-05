@@ -18,22 +18,23 @@ export class VizTrackComponent implements OnInit {
 
   sourceForm: FormGroup;
 
-  t1: string;
-  t2: string;
-  t3: string;
-  t4: string;
-  t5: string;
-  t6: string;
-  t7: string;
-  t8: string;
-  t9: string;
-  t10: string;
-  t11: string;
-  t12: string;
-  t13: string;
-  t14: string;
-  t15: string;
-  t16: string;
+  tendancyDatas: string[] = []
+  /*tendancyDatasObs = [this.ids.t1$,
+                      this.ids.t2$,
+                      this.ids.t3$,
+                      this.ids.t4$,
+                      this.ids.t5$,
+                      this.ids.t6$,
+                      this.ids.t7$,
+                      this.ids.t8$,
+                      this.ids.t9$,
+                      this.ids.t10$,
+                      this.ids.t11$,
+                      this.ids.t12$,
+                      this.ids.t13$,
+                      this.ids.t14$,
+                      this.ids.t15$,
+                      this.ids.t16$]*/
 
   constructor(private audioService: AudioService,
               private ids: IncomingDatasSimulatorService,
@@ -45,9 +46,9 @@ export class VizTrackComponent implements OnInit {
       datasInit[i] = 5;
     };
     this.datas = datasInit;
-    this.ids.datas$.subscribe(
+    this.ids.datas$.subscribe( // Subscription à l'observable datas$ pour capter les données de fréquence chaque fois qu'il en émettra
       (datas:number[]) => {
-        this.datas = datas;
+        this.datas = datas; // Quand des données sont présentées, on les passe à l'array datas pour utilisation par le template
       }
     );
     
@@ -62,51 +63,72 @@ export class VizTrackComponent implements OnInit {
         }
       }
     );
-
-    this.getSubscriptions();
-
-    /*for (let i=0; i<16; i++) {
-        let currentSubject = 'this.ids.t' + (i + 1) + '$.subscribe((tend: number) => {this.t' + (i + 1) + ' = tend};)';
-        eval(currentSubject)
-      }*/
-
   }
 
-  /*ngDoCheck() {
+  /*ngDoCheck() { 
     if (this.audioService.error === true) {
       this.errorMsg = 'Unable to access this stream, please refresh the page and try an other URL';
     }
     console.log('hook')
   }*/
 
+  /*createTs() {
+    for (let i = 0; i < 16; i++) {
+      //this.tendancyDatas[i] = '–';
+      this.tendancyDatasObs[i].subscribe(
+        (tend: number) => {
+           this.tendancyDatas[i + 1] = this.checkTend(tend)
+        }
+      )
+    }
+  }*/
+
   playIt() {
-    const source = this.sourceForm.get('source').value;
-    setTimeout(
+    const source = this.sourceForm.get('source').value; // Récupération de l'URL dans le formulaire
+    setTimeout( // Déclanchement d'un setTimeout afin d'attendre la fin de l'animation afin que les barres de visualisation soient
+                // en place avant de commencer à leur transmettre des directives + une marge de 200ms
       () => {
-        this.audioService.playStream(source);
-        this.ids.checkFrequencies();
+        this.audioService.playStream(source); // Appel de la fonction playStream du service audio.service en lui passant l'argument
+        this.ids.checkFrequencies(); // Appel initial de la fonction checkFrequencies() du service incoming-datas-simulator
+                                     // Grâce à l'observable il ne sera pas nécessaire de l'appeler à nouveau en cas de reprise de la lecture
+                                     // après interruption puisque ses instructions s'exécuteront dès que ce dernier aura émis la valeur true
         this.goDown = false;
-      },1200);
+        //this.createTs();
+        this.getSubscription()
+
+      },1000);
     this.started = true;
-    this.goDown = true;
+    this.goDown = true; // Déclanchement de l'animation de début de lecture avec une directive par attribut
     
   }
 
   pauseIt() {
-    this.audioService.pauseStream();
+    this.audioService.pauseStream(); // Appel de la fonction pauseStream du service audio.service pour interrompre la lecture
     this.paused = true;
     this.ids.streaming = false;
   }
 
   resumeIt() {
-    this.audioService.resumeStream();
+    this.audioService.resumeStream(); // Appel de la fonction resumeStream du service audio.service pour relancer la lecture
     this.paused = false;
     this.ids.streaming = true;
-    this.ids.state$.next(true);
+    this.ids.state$.next(true); // On passe true à l'observable pour qu'il émette cette valeur afin de relancer la capture
+                                // de données de fréquences
+
+    /*this.ids.state=true;                           
+    this.ids.checkFrequencies()*/ // Pour le cas où l'on n'utilise pas d'observable dans cette fonction : voir commentaires dans
+                                  // le service incoming-datas-simulator 
+  }
+
+  getSubscription() {
+    for (let i=0; i<16; i++) {
+          this.ids['t' + (i + 1) + '$'].subscribe(
+            (tend: number) => {this.tendancyDatas[i] = this.checkTend(tend)})
+        }
   }
 
   getHeights(bar) {
-    return this.datas[bar] + 5 + 'px';    
+    return (this.datas[bar]*3/4) + 5 + 'px';    
   }
 
   checkTend(tend) {
@@ -119,7 +141,7 @@ export class VizTrackComponent implements OnInit {
         }  
   }
 
-  getSubscriptions() {
+  /*getSubscriptions() {
 
     this.ids.t1$.subscribe(
       (tend: number) => {
@@ -217,5 +239,5 @@ export class VizTrackComponent implements OnInit {
       }
     )
  
-  }
+  }*/
 }

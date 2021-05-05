@@ -24,7 +24,7 @@
 
         <p class="text-center mt-5" *ngIf="errorMsg">{{errorMsg}}</p>
     </div>
-    
+    <!--Affichage des barres de manière basique-->
     <div class="row my-4" [ngClass]="{'moving-down': goDown === true}">
     <div class="viewer col-10 mx-auto" [ngClass]="{'viewing': goDown === false && started === true}">
         <div id="bars-set">
@@ -47,7 +47,7 @@
         </div>
     </div>
     </div>
-
+    <!--Affichage des barres en utilisant une directive structurelle-->
     <div class="row my-4" [ngClass]="{'moving-down': goDown === true}">
         <div class="viewer-2 col-10 mx-auto">
             <ul class="list-group">
@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <div class="row tendance col-10 mx-auto mb-5">
+    <!--<div class="row tendance col-10 mx-auto mb-5">
         <div id="line1" class="lines" >{{t1}}</div>
         <div id="line2" class="lines">{{t2}}</div>
         <div id="line3" class="lines">{{t3}}</div>
@@ -76,6 +76,25 @@
         <div id="line14" class="lines">{{t14}}</div>
         <div id="line15" class="lines">{{t15}}</div>
         <div id="line16" class="lines">{{t16}}</div>    
+    </div>-->
+
+    <div class="row tendance col-10 mx-auto mb-5">
+        <div id="line1" class="lines">{{tendancyDatas[1]}}</div>
+        <div id="line2" class="lines">{{tendancyDatas[2]}}</div>
+        <div id="line3" class="lines">{{tendancyDatas[3]}}</div>
+        <div id="line4" class="lines">{{tendancyDatas[4]}}</div>
+        <div id="line5" class="lines">{{tendancyDatas[5]}}</div>
+        <div id="line6" class="lines">{{tendancyDatas[6]}}</div>
+        <div id="line7" class="lines">{{tendancyDatas[7]}}</div>
+        <div id="line8" class="lines">{{tendancyDatas[8]}}</div>
+        <div id="line9" class="lines">{{tendancyDatas[9]}}</div>
+        <div id="line10" class="lines">{{tendancyDatas[10]}}</div>
+        <div id="line11" class="lines">{{tendancyDatas[11]}}</div>
+        <div id="line12" class="lines">{{tendancyDatas[12]}}</div>
+        <div id="line13" class="lines">{{tendancyDatas[13]}}</div>
+        <div id="line14" class="lines">{{tendancyDatas[14]}}</div>
+        <div id="line15" class="lines">{{tendancyDatas[15]}}</div>
+        <div id="line16" class="lines">{{tendancyDatas[16]}}</div>
     </div>
 
 

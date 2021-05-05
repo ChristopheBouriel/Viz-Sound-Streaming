@@ -16,7 +16,7 @@ export class VizBarsComponent implements OnInit {
   }
 
   getHeight() {
-    return this.value + 5 + 'px';    
+    return (this.value*3/4) + 5 + 'px';    
   }
 
 }
