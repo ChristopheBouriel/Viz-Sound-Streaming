@@ -9,6 +9,7 @@ export class VizBarsComponent implements OnInit {
 
   @Input() index: number;
   @Input() value: number;
+  @Input() color: string;
   
   constructor() { }
 

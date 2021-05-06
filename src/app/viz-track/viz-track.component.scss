@@ -24,16 +24,17 @@ label {
     min-height: 200px;
 }
 
-.timer {
+/*.timer {
     
     display: flex;
     justify-content: center;
-}
+}*/
 
 #time-reading {
     font-size: 2rem;
     font-weight: 600;
-    width: 150px;
+    width: auto;
+    min-height: 50px;
 }
 
 #bars-set {    
@@ -50,7 +51,7 @@ label {
 }
 
 .viewing {
-    height: 270px;
+    height: 210px;
 }
 
 .bars {
@@ -102,13 +103,13 @@ input {
     color: rgb(149, 0, 255);
     font-size: x-large;
     font-weight: 700;
-    padding: 1%;
+    padding: 0;
 }
 
 .lines {
-    width: 2.8vw;
-    margin: 1%;
-
+    width: 2.4vw;
+    margin: 0.75%;
+    text-align: center;
 }
 
 .moving-down {
@@ -118,9 +119,9 @@ input {
 
 @keyframes godown {
     0% {
-      transform: translateY(130px);
+      transform: translateY(30px);
     }
     100% {
-      transform: translateY(260px);
+      transform: translateY(200px);
     }
   }

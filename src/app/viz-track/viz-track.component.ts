@@ -19,6 +19,8 @@ export class VizTrackComponent implements OnInit, OnDestroy {
   goDown: boolean;
   sourceForm: FormGroup;
   tendancyDatas: string[] = [];
+  tendancyColors: string[] = [];
+  tendancyColorsBottom: string[] = [];
   timer: Date;
 
   componentDestroyed$: Subject<boolean> = new Subject() // Creation d'un observable qui permettra d'annuler toutes les souscriptions en même temps
@@ -100,7 +102,7 @@ export class VizTrackComponent implements OnInit, OnDestroy {
   getSubscription() { // Subscription à tous les observables émettant la nouvelle tendance pour une donnée de fréquence
     for (let i=0; i<16; i++) {
           this.ids['t' + (i + 1) + '$'].pipe(takeUntil(this.componentDestroyed$)).subscribe(
-            (tend: number) => {this.tendancyDatas[i] = this.checkTend(tend)})
+            (tend: number) => {this.tendancyDatas[i] = this.checkTend(tend, i)})
         }
   }
 
@@ -108,14 +110,24 @@ export class VizTrackComponent implements OnInit, OnDestroy {
     return (this.datas[bar]*3/4) + 5 + 'px';    
   }
 
-  checkTend(tend) { // On aurait pu éviter cette fonction en envoyant directement la string depuis le service mais j'ai préfèré
+  getColors(bar) {
+    
+  }
+
+  checkTend(tend, i) { // On aurait pu éviter cette fonction en envoyant directement la string depuis le service mais j'ai préfèré
                     // séparer la logique de l'affichage, d'autant que les données numériques pourrait être utilisées pour autre
                     // chose, calcul et/ou autre type d'affichage
     if (tend === -1) {
+          this.tendancyColors[i] = '#00ab00';
+          this.tendancyColorsBottom[i] = '#31c5ff';
           return '\\'
         } else if (tend === 1) {
+          this.tendancyColors[i] = '#004d00';
+          this.tendancyColorsBottom[i] = '#1d7ea4';
           return '/'
         } else {
+          this.tendancyColors[i] = 'green';
+          this.tendancyColorsBottom[i] = '#27a0d0';
           return '–'
         }  
   }

@@ -14,6 +14,7 @@
                 
             </div>
         </form>
+        
 
         <div class="row mt-5" *ngIf="!errorMsg">
             <div class="row col-8 mx-auto justify-content-center">            
@@ -25,34 +26,32 @@
 
         <p class="text-center mt-5" *ngIf="errorMsg">{{errorMsg}}</p>
         <!--Affichage du temps de lecture en utilisant le date pipe de Angular pour formater en HH:mm:ss-->
-        <div class="timer col-10 mx-auto mt-3">
-            
-                <p id="time-reading">{{timer | date:'HH:mm:ss'}}</p>
-            
+        <div class="row timer mt-3 justify-content-center">            
+            <p id="time-reading" *ngIf="started">{{timer | date:'HH:mm:ss'}}</p>            
         </div>
         
     </div>
     <!--Affichage des barres de manière basique-->
     <!--Modification de la hauteur et animation initiale en utilisant des directives par attribut-->
-    <div class="row my-4" [ngClass]="{'moving-down': goDown === true}">
+    <div class="row mb-4" [ngClass]="{'moving-down': goDown === true}">
     <div class="viewer col-10 mx-auto" [ngClass]="{'viewing': goDown === false && started === true}">
         <div id="bars-set">
-            <div id="bar1" class="bars" [ngStyle]="{height: getHeights(0)}"></div>
-            <div id="bar2" class="bars" [ngStyle]="{height: getHeights(1)}"></div>
-            <div id="bar3" class="bars" [ngStyle]="{height: getHeights(2)}"></div>
-            <div id="bar4" class="bars" [ngStyle]="{height: getHeights(3)}"></div>
-            <div id="bar5" class="bars" [ngStyle]="{height: getHeights(4)}"></div>
-            <div id="bar6" class="bars" [ngStyle]="{height: getHeights(5)}"></div>
-            <div id="bar7" class="bars" [ngStyle]="{height: getHeights(6)}"></div>
-            <div id="bar8" class="bars" [ngStyle]="{height: getHeights(7)}"></div>
-            <div id="bar9" class="bars" [ngStyle]="{height: getHeights(8)}"></div>
-            <div id="bar10" class="bars" [ngStyle]="{height: getHeights(9)}"></div>
-            <div id="bar11" class="bars" [ngStyle]="{height: getHeights(10)}"></div>
-            <div id="bar12" class="bars" [ngStyle]="{height: getHeights(11)}"></div>
-            <div id="bar13" class="bars" [ngStyle]="{height: getHeights(12)}"></div>
-            <div id="bar14" class="bars" [ngStyle]="{height: getHeights(13)}"></div>
-            <div id="bar15" class="bars" [ngStyle]="{height: getHeights(14)}"></div>
-            <div id="bar16" class="bars" [ngStyle]="{height: getHeights(15)}"></div>
+            <div id="bar1" class="bars" [ngStyle]="{'height': getHeights(0), 'background-color': tendancyColors[0]}"></div>
+            <div id="bar2" class="bars" [ngStyle]="{'height': getHeights(1), 'background-color': tendancyColors[1]}"></div>
+            <div id="bar3" class="bars" [ngStyle]="{'height': getHeights(2), 'background-color': tendancyColors[2]}"></div>
+            <div id="bar4" class="bars" [ngStyle]="{'height': getHeights(3), 'background-color': tendancyColors[3]}"></div>
+            <div id="bar5" class="bars" [ngStyle]="{'height': getHeights(4), 'background-color': tendancyColors[4]}"></div>
+            <div id="bar6" class="bars" [ngStyle]="{'height': getHeights(5), 'background-color': tendancyColors[5]}"></div>
+            <div id="bar7" class="bars" [ngStyle]="{'height': getHeights(6), 'background-color': tendancyColors[6]}"></div>
+            <div id="bar8" class="bars" [ngStyle]="{'height': getHeights(7), 'background-color': tendancyColors[7]}"></div>
+            <div id="bar9" class="bars" [ngStyle]="{'height': getHeights(8), 'background-color': tendancyColors[8]}"></div>
+            <div id="bar10" class="bars" [ngStyle]="{'height': getHeights(9), 'background-color': tendancyColors[9]}"></div>
+            <div id="bar11" class="bars" [ngStyle]="{'height': getHeights(10), 'background-color': tendancyColors[10]}"></div>
+            <div id="bar12" class="bars" [ngStyle]="{'height': getHeights(11), 'background-color': tendancyColors[11]}"></div>
+            <div id="bar13" class="bars" [ngStyle]="{'height': getHeights(12), 'background-color': tendancyColors[12]}"></div>
+            <div id="bar14" class="bars" [ngStyle]="{'height': getHeights(13), 'background-color': tendancyColors[13]}"></div>
+            <div id="bar15" class="bars" [ngStyle]="{'height': getHeights(14), 'background-color': tendancyColors[14]}"></div>
+            <div id="bar16" class="bars" [ngStyle]="{'height': getHeights(15), 'background-color': tendancyColors[15]}"></div>
         </div>
     </div>
     </div>
@@ -63,7 +62,8 @@
             <ul class="list-group">
                 <app-viz-bars *ngFor="let data of datas; let i = index"
                     [index]="i"
-                    [value]="data">
+                    [value]="data"
+                    [color]="tendancyColorsBottom[i]">
                 </app-viz-bars>
             </ul>
         </div>
