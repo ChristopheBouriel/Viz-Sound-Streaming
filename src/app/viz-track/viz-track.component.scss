@@ -24,6 +24,18 @@ label {
     min-height: 200px;
 }
 
+.timer {
+    
+    display: flex;
+    justify-content: center;
+}
+
+#time-reading {
+    font-size: 2rem;
+    font-weight: 600;
+    width: 150px;
+}
+
 #bars-set {    
     display: flex;
     justify-content: space-around;

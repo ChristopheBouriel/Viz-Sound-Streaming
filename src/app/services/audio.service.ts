@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AudioService {  
 
   private audioContext = window.AudioContext || (window as any).webkitAudioContext;
@@ -13,12 +11,18 @@ export class AudioService {
   frequenciesDatas;
   analyser;
 
-  error$ = new BehaviorSubject<boolean>(false);
+  error$ = new BehaviorSubject<string>(''); // Création d'un observable BehaviorSubject qui émettra un event pour ses subscribers
+                                            // et leur passera la valeur (et comme il la garde en tant que BehaviorSubject, elle restera
+                                            // accessible même lors d'une subscription ultérieure à l'event)
 
   constructor() { }
 
   playStream(source) {
-    const context = new AudioContext(); // Création d'un objet AudioContext
+    const context = new AudioContext({
+      latencyHint: 'interactive',
+      sampleRate: 44100,
+    }); // Création d'un objet AudioContext
+    
     this.audio.crossOrigin = 'anonymous'; // Règle le problème de CORS policy... si le header est présent dans la réponse du serveur
     this.analyser = context.createAnalyser(); // Création d'un objet AnalyserNode permettant de
                                               // récolter des données sur le flux audio, comme
@@ -38,9 +42,8 @@ export class AudioService {
     const errorHandler = e => {
       console.error('Error', e); // Si la promesse a été rejetée, un event error a été lancé et la fonction errorHandler
                                  // attachée à celui-ci a été appelée
-      this.error$.next(true); // On passe la valeur true à l'observable BehaviorSubject qui lui même émettra un event pour ses subscribers
-                              // et leur passera la valeur (et comme il la garde en tant que BehaviorSubject, elle restera accessible même lors d'une
-                              // subscription ultérieure à l'event)
+      this.error$.next('Sorry, the access to this stream has been blocked, please refresh the page and try an other URL'); // On passe la valeur true à l'observable BehaviorSubject qui lui
+                                                                                                                           // même émettra un event pour ses subscribers et leur passera la valeur
       this.audio.removeEventListener('error', errorHandler); // On supprime le EventListener pour ce type de event
     };
     this.audio.addEventListener('canplaythrough', playHandler, false); // On ajoute un EventListener pour les event de type canplaythrough
@@ -58,12 +61,12 @@ export class AudioService {
 
     this.datasSetSize = this.analyser.frequencyBinCount; // On récupère la taille du set de valeurs. Ici 16, la moitié de la valeur de fftSize
     this.frequenciesDatas = new Uint8Array(this.datasSetSize); // On créé un array d'un type spécial pour les besoins de la méthode getByteFrequencyData()
-                                                                    // de l'objet Analyser.
-                                                                    // On appelera cette méthode depuis le service incoming-datas-simulator, puisque c'est celui-ci
-                                                                    // qui manipule les données et qu'il a été séparé volontairement
-                                                                    // Cette méthode prend en paramètre le tableau des données de fréquences et modifie les valeurs
-                                                                    // directement dans celui-ci ; il suffit de le parcourir après avoir appelé la méthode pour accéder
-                                                                    // au valeurs enregistrées au moment de cet appel
+                                                               // de l'objet Analyser.
+                                                               // On appelera cette méthode depuis le service incoming-datas-simulator, puisque c'est celui-ci
+                                                               // qui manipule les données et qu'il a été séparé volontairement
+                                                               // Cette méthode prend en paramètre le tableau des données de fréquences et modifie les valeurs
+                                                               // directement dans celui-ci ; il suffit de le parcourir après avoir appelé la méthode pour accéder
+                                                               // au valeurs enregistrées au moment de cet appel
     }  
 
   resumeStream() {
