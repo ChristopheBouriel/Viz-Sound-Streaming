@@ -73,7 +73,7 @@ export class VizTrackComponent implements OnInit, OnDestroy {
         this.audioService.playStream(source); // Appel de la fonction playStream du service audio.service en lui passant l'argument
         this.ids.checkFrequencies(); // Appel initial de la fonction checkFrequencies() du service incoming-datas-simulator
                                      // Grâce à l'observable il ne sera pas nécessaire de l'appeler à nouveau en cas de reprise de la lecture
-                                     // après interruption puisque ses instructions s'exécuteront dès que ce dernier aura émis la valeur true
+                                     // après interruption puisque ses instructions s'exécuteront dès que ce dernier aura émis une valeur
         this.goDown = false;
         this.getSubscription();
       },1000);
@@ -82,41 +82,39 @@ export class VizTrackComponent implements OnInit, OnDestroy {
   }
 
   pauseIt() {
-    this.audioService.pauseStream(); // Appel de la fonction pauseStream du service audio.service pour interrompre la lecture
+    this.audioService.pauseStream(); // Appel de la fonction pauseStream() du service audio.service pour interrompre la lecture
     this.paused = true;
     this.ids.streaming = false;
   }
 
   resumeIt() {
-    this.audioService.resumeStream(); // Appel de la fonction resumeStream du service audio.service pour relancer la lecture
+    this.audioService.resumeStream(); // Appel de la fonction resumeStream() du service audio.service pour relancer la lecture
     this.paused = false;
     this.ids.streaming = true;
-    this.ids.clock$.next(this.timer.getSeconds()*1000); // On passe true à l'observable pour qu'il émette cette valeur afin de relancer la capture
+    this.ids.clock$.next(this.timer.getSeconds()*1000); // On passe le temps de lecture en millisecondes à l'observable pour qu'il émette cette valeur afin de relancer la capture
                                                         // de données de fréquences
-                        
+                                                        // Si l'on considère que le modèle doit être la "seule source de vérité", il vaudrait mieux lui passer la valeur de la
+                                                        // variable count du service incoming-datas-simulator transformée en millisecondes : this.ids.clock$.next(this.ids.count*100);
+
     //this.ids.checkFrequencies() // Pour le cas où l'on n'utilise pas d'observable dans cette fonction : voir commentaires dans
                                   // le service incoming-datas-simulator
                                   // La ligne de code précédente pourra être passée en commentaire
   }
 
-  getSubscription() { // Subscription à tous les observables émettant la nouvelle tendance pour une donnée de fréquence
+  getSubscription() { // Souscription à tous les observables émettant la nouvelle tendance pour une donnée de fréquence
     for (let i=0; i<16; i++) {
           this.ids['t' + (i + 1) + '$'].pipe(takeUntil(this.componentDestroyed$)).subscribe(
             (tend: number) => {this.tendancyDatas[i] = this.checkTend(tend, i)})
         }
   }
 
-  getHeights(bar) { // Chaque barre appele la fonction en lui passant son index en paramètre grâce à une directive [ngStyle]
+  getHeights(bar) { // Chaque barre appelle la fonction, en lui passant son index en paramètre, grâce à une directive [ngStyle]
     return (this.datas[bar]*3/4) + 5 + 'px';    
   }
 
-  getColors(bar) {
-    
-  }
-
-  checkTend(tend, i) { // On aurait pu éviter cette fonction en envoyant directement la string depuis le service mais j'ai préfèré
-                    // séparer la logique de l'affichage, d'autant que les données numériques pourrait être utilisées pour autre
-                    // chose, calcul et/ou autre type d'affichage
+  checkTend(tend, i) { // On aurait pu éviter cette fonction en envoyant directement la string depuis le service, mais j'ai préfèré
+                    // séparer la logique de l'affichage, d'autant que les données numériques peuvent être utilisées pour autre
+                    // chose, calcul et/ou type d'affichage différent 
     if (tend === -1) {
           this.tendancyColors[i] = '#00ab00';
           this.tendancyColorsBottom[i] = '#31c5ff';
@@ -133,8 +131,7 @@ export class VizTrackComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete();
+    this.componentDestroyed$.next(true); // Emission de la valeur true pour l'opérateur takeUntil du pipe afin d'annuler toutes les souscriptions
+    this.componentDestroyed$.complete(); // Appel de la méthode complete() qui aura pour effet d'annuler la souscription de cet observable lui-même
   }
-
 }

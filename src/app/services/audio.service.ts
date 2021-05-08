@@ -12,8 +12,9 @@ export class AudioService {
   analyser;
 
   error$ = new BehaviorSubject<string>(''); // Création d'un observable BehaviorSubject qui émettra un event pour ses subscribers
-                                            // et leur passera la valeur (et comme il la garde en tant que BehaviorSubject, elle restera
-                                            // accessible même lors d'une subscription ultérieure à l'event)
+                                            // et leur passera la valeur : comme il la garde en tant que BehaviorSubject, elle restera
+                                            // accessible même lors d'une subscription ultérieure à l'émission du dernier event ( il faut
+                                            // donc lui fournir une valeur inititale, ici une string vide)
 
   constructor() { }
 
@@ -29,37 +30,36 @@ export class AudioService {
                                               // des données sur les fréquences par exemple
     const sourceAudio = context.createMediaElementSource(this.audio); // Création d'un objet MediaElementAudioSourceNode
                                                                       // d’après le HTMLAudioElement créé plus haut
-    sourceAudio.connect(this.analyser); // On connect l'analyseur au flot de données
-    sourceAudio.connect(context.destination); // On connecte le flot à la destination, par défaut les HP de mon PC
+    sourceAudio.connect(this.analyser); // On connecte l'analyseur au flot de données
+    sourceAudio.connect(context.destination); // On connecte le flot à la destination, par défaut les HP de mon PC par exemple
     const playHandler = () => {
       this.audio.play(); // Appel de la méthode play() de l'objet HTMLAudioElement qui renvoie une Promise
       this.audio.removeEventListener('canplaythrough', playHandler); // Si la Promise a été résolue, un event 'canplaythrough'
-                                                                     // est lancé et on supprime le EventListener pour ce type de event
-                                                                     // et il n'appelera donc plus la fonction playHandler() attachée, par 
+                                                                     // est lancé et on supprime le EventListener pour ce type de event :
+                                                                     // il n'appelera donc plus la fonction playHandler() attachée, par 
                                                                      // exemple à chaque fois que l'on appelera la méthode Play() après
                                                                      // avoir appelé Pause()
     };
     const errorHandler = e => {
-      console.error('Error', e); // Si la promesse a été rejetée, un event error a été lancé et la fonction errorHandler
-                                 // attachée à celui-ci a été appelée
-      this.error$.next('Sorry, the access to this stream has been blocked, please refresh the page and try an other URL'); // On passe la valeur true à l'observable BehaviorSubject qui lui
-                                                                                                                           // même émettra un event pour ses subscribers et leur passera la valeur
+      console.error('Error', e); // Si la promesse a été rejetée, un event error a été lancé, la fonction errorHandler attachée à celui-ci a été appelée
+                                 // et le message d'erreur sera affiché dans la console
+      this.error$.next('Sorry, the access to this stream has been blocked, please refresh the page and try an other URL'); // On passe la string à l'observable BehaviorSubject qui lui
+                                                                                                                           // même émettra un event pour son subscriber et lui passera le texte à afficher
       this.audio.removeEventListener('error', errorHandler); // On supprime le EventListener pour ce type de event
     };
-    this.audio.addEventListener('canplaythrough', playHandler, false); // On ajoute un EventListener pour les event de type canplaythrough
+    this.audio.addEventListener('canplaythrough', playHandler, false); // On ajoute un EventListener pour les events de type canplaythrough
                                                                        // afin de savoir quand la lecture devient possible, la fonction attachée
                                                                        // playHandler() est appelée (elle ne le sera plus car on supprime cet EventListener
-                                                                       // au sein de celle-ci, ce qui par ailleurs pourrait poser des problèmes)
-    this.audio.addEventListener('error', errorHandler); // On ajoute un EventListener pour les event de type canplaythrough
-                                                        // afin de savoir quand la lecture devient possible, la fonction attachée
-                                                        // errorHandler() est appelée
+                                                                       // au sein de celle-ci, ce qui par ailleurs pourrait poser des problèmes avec certains navigateurs)
+    this.audio.addEventListener('error', errorHandler); // On ajoute un EventListener pour les events de type canplaythrough
+                                                        // afin de savoir quand la lecture devient possible, la fonction attachée errorHandler() est appelée
     this.audio.src = source; // On indique à l'objet HTMLAudioElement la string correspondant à l'URL, que l'on a passé en argument lors de l'appel de
                              // la fonction playStream() depuis le composant viz-track
-    
+
     this.analyser.fftSize = 32; // On indique la valeur de la propriété fft* de l'objet Analyser. *C'est la taille de la Fast Fourrier Transformation
                                 // à utiliser pour déterminer le domaine fréquentiel
 
-    this.datasSetSize = this.analyser.frequencyBinCount; // On récupère la taille du set de valeurs. Ici 16, la moitié de la valeur de fftSize
+    this.datasSetSize = this.analyser.frequencyBinCount; // On récupère la taille du set de valeurs, la moitié de la valeur de fftSize (ici 16)
     this.frequenciesDatas = new Uint8Array(this.datasSetSize); // On créé un array d'un type spécial pour les besoins de la méthode getByteFrequencyData()
                                                                // de l'objet Analyser.
                                                                // On appelera cette méthode depuis le service incoming-datas-simulator, puisque c'est celui-ci
