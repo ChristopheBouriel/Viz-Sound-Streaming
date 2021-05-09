@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class AudioService {  
 
-  private audioContext = window.AudioContext || (window as any).webkitAudioContext;
+  private audioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
   private audio = new Audio();  // Création d'un objet HTMLAudioElement
   private datasSetSize: number;
   
@@ -15,6 +15,8 @@ export class AudioService {
                                             // et leur passera la valeur : comme il la garde en tant que BehaviorSubject, elle restera
                                             // accessible même lors d'une subscription ultérieure à l'émission du dernier event ( il faut
                                             // donc lui fournir une valeur inititale, ici une string vide)
+
+  userMessage$ = new BehaviorSubject('');
 
   constructor() { }
 
@@ -43,7 +45,7 @@ export class AudioService {
     const errorHandler = e => {
       console.error('Error', e); // Si la promesse a été rejetée, un event error a été lancé, la fonction errorHandler attachée à celui-ci a été appelée
                                  // et le message d'erreur sera affiché dans la console
-      this.error$.next('Sorry, the access to this stream has been blocked, please refresh the page and try an other URL'); // On passe la string à l'observable BehaviorSubject qui lui
+      this.error$.next('Sorry, the access to this stream has been blocked by the browser, please refresh the page and try an other URL'); // On passe la string à l'observable BehaviorSubject qui lui
                                                                                                                            // même émettra un event pour son subscriber et lui passera le texte à afficher
       this.audio.removeEventListener('error', errorHandler); // On supprime le EventListener pour ce type de event
     };
@@ -53,6 +55,17 @@ export class AudioService {
                                                                        // au sein de celle-ci, ce qui par ailleurs pourrait poser des problèmes avec certains navigateurs)
     this.audio.addEventListener('error', errorHandler); // On ajoute un EventListener pour les events de type canplaythrough
                                                         // afin de savoir quand la lecture devient possible, la fonction attachée errorHandler() est appelée
+    
+    const endOfStreamHandler = () => {
+      setTimeout(
+        () => {
+          this.userMessage$.next('End of stream, please refresh the page to start a new one');
+        },2000
+      )      
+    }
+
+    this.audio.addEventListener('ended', endOfStreamHandler)
+    
     this.audio.src = source; // On indique à l'objet HTMLAudioElement la string correspondant à l'URL, que l'on a passé en argument lors de l'appel de
                              // la fonction playStream() depuis le composant viz-track
 

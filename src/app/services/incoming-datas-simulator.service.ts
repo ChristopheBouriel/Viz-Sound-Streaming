@@ -47,7 +47,9 @@ export class IncomingDatasSimulatorService {
                         // en commentaire* ci-dessous – mais l'un des objectifs de ce mini-projet de démo était de montrer
                         // leur utilisation. Par ailleurs il aura une double utilité :
                         //  - Lorsqu'il émet, il relance un cycle de capture de données de fréquences
-                        //  - La valeur qu'il émet est captée dans le controlleur et permet de mettre à jour le temps de lecture écoulé dans le template                         
+                        //  - La valeur qu'il émet est captée dans le controlleur et permet de mettre à jour le temps de lecture
+                        // écoulé dans le template – ici aussi c'est volontairement que les propriétés de l'objet HTMLAudioElement
+                        // comme currentTime ne sont pas utilisées                    
                         //
                         // * Cela nécessite aussi une modification dans le controleur : voir les deux lignes de code passées en commentaire
                         //   dans la fonction resumeIt() du composant viz-track.component
@@ -56,7 +58,7 @@ export class IncomingDatasSimulatorService {
                              // une valeur sera émise, relançant le même enchainement... et ainsi de suite jusqu'à ce que l'une des conditions
                              // du if ne soit plus satisfaite – streaming lorsque l'on met en pause en fonctionnement normal                             
         () => {
-            if (this.streaming && !this.audioService.error$.value) {
+            if (this.streaming && !this.audioService.error$.value && !this.audioService.userMessage$.value) {
             setTimeout(
             () => {
               this.audioService.analyser.getByteFrequencyData(this.audioService.frequenciesDatas); // On effectue une capture de données de fréquances
@@ -71,9 +73,9 @@ export class IncomingDatasSimulatorService {
                 this.cacheLastThree.splice(0,1); // Suppression de la première valeur du cache dès que celui-ci en contient quatre
                 this.checkTendancy();
               };              
-              this.clock$.next(this.count*100); // On émet une valeur : le event déclenche un nouveau cycle du timer et la valeur émise permet de
+              this.clock$.next(this.count*80); // On émet une valeur : le event déclenche un nouveau cycle du timer et la valeur émise permet de
                                                 // mettre à jour le temps de lecture écoulé
-              },100
+              },80
             )
           }
         }

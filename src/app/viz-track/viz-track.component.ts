@@ -13,9 +13,11 @@ import { takeUntil } from 'rxjs/operators';
 export class VizTrackComponent implements OnInit, OnDestroy {
 
   started: boolean;
+  ended: boolean = false;
   paused: boolean;
   datas : Array<number>
   errorMsg: string;
+  userMessage: string;
   goDown: boolean;
   sourceForm: FormGroup;
   tendancyDatas: string[] = [];
@@ -32,10 +34,7 @@ export class VizTrackComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    let datasInit = []; // Déclaration puis initialisation d'un array correspondant à l'affichage initial des barres
-    for(let i=0; i<16; ++i) {
-      datasInit[i] = 5;
-    };
+    let datasInit = new Array(16).fill(5); // Déclaration puis initialisation d'un array correspondant à l'affichage initial des barres
     this.datas = datasInit; // Copie de l'array d'initialisation dans celui qui sera utilisé pour le binding avec le template
 
     this.ids.datas$.pipe(takeUntil(this.componentDestroyed$)).subscribe( // Souscription à l'observable datas$ pour capter les données de fréquence chaque fois qu'il en émettra
@@ -48,10 +47,24 @@ export class VizTrackComponent implements OnInit, OnDestroy {
       source: new FormControl(null, [Validators.required, Validators.pattern('^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?')])
     });
 
+    this.infosSubscriptions();
+  }
+
+  infosSubscriptions() {
     this.audioService.error$.pipe(takeUntil(this.componentDestroyed$)).subscribe( // Souscription à l'observable error$ pour capter la string indiquant l'erreur survenue chaque fois qu'il en émettra une
       (error: string) => {
         if (error) {
           this.errorMsg = error;
+        }
+      }
+    );
+
+    this.audioService.userMessage$.pipe(takeUntil(this.componentDestroyed$)).subscribe( // Souscription à l'observable userMessage$ pour capter la string correspondant au message chaque fois qu'il en émettra une
+      (message: string) => {
+        if (message) {
+          this.userMessage = message;
+          this.started = false;
+          this.ended = true;
         }
       }
     );
@@ -62,7 +75,6 @@ export class VizTrackComponent implements OnInit, OnDestroy {
         this.timer.setSeconds(timer/1000) // Transformation des millisecondes en format date pour utilisation par le pipe Angular – voir commentaire dans le template du composant
       }
     )
-
   }
 
   playIt() {
@@ -75,7 +87,7 @@ export class VizTrackComponent implements OnInit, OnDestroy {
                                      // Grâce à l'observable il ne sera pas nécessaire de l'appeler à nouveau en cas de reprise de la lecture
                                      // après interruption puisque ses instructions s'exécuteront dès que ce dernier aura émis une valeur
         this.goDown = false;
-        this.getSubscription();
+        this.getTendancySubscriptions();
       },1000);
     this.started = true;
     this.goDown = true; // Déclanchement de l'animation de début de lecture avec une directive par attribut  
@@ -101,7 +113,7 @@ export class VizTrackComponent implements OnInit, OnDestroy {
                                   // La ligne de code précédente pourra être passée en commentaire
   }
 
-  getSubscription() { // Souscription à tous les observables émettant la nouvelle tendance pour une donnée de fréquence
+  getTendancySubscriptions() { // Souscription à tous les observables émettant la nouvelle tendance pour une donnée de fréquence
     for (let i=0; i<16; i++) {
           this.ids['t' + (i + 1) + '$'].pipe(takeUntil(this.componentDestroyed$)).subscribe(
             (tend: number) => {this.tendancyDatas[i] = this.checkTend(tend, i)})

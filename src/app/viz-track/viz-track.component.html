@@ -3,7 +3,7 @@
     <h1 class="text-center mt-3">VizSound</h1>
 
     <div id="controls">
-        <form [formGroup]="sourceForm" *ngIf="!started" class="col-10 mx-auto my-3">
+        <form [formGroup]="sourceForm" *ngIf="!started && !ended" class="col-10 mx-auto my-3">
             <div class="form-group">
                 <label for="title">Paste an URL</label>
                 <input type="text" class="form-control" id="source" formControlName="source" placeholder="https://my-URL.mp3">
@@ -25,8 +25,9 @@
         </div>
 
         <p class="text-center mt-5" *ngIf="errorMsg">{{errorMsg}}</p>
+        <p class="user-message text-center mt-5" *ngIf="userMessage">{{userMessage}}</p>
         <!--Affichage du temps de lecture en utilisant le date pipe de Angular pour formater en HH:mm:ss-->
-        <div class="row timer mt-3 justify-content-center">            
+        <div class="row mt-3 justify-content-center">            
             <p id="time-reading" *ngIf="started">{{timer | date:'HH:mm:ss'}}</p>            
         </div>
         

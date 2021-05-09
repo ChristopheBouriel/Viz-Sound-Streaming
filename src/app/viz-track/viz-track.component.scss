@@ -8,6 +8,19 @@
     font-style: normal;
   }
 
+
+@media screen and (max-width: 767.98px) {
+    #time-reading {
+                   width: auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+    #time-reading {
+                   width: 160px;
+  }
+}
+
 h1 {
     color: aquamarine;
     font-family: 'Belligerent-Madness';
@@ -24,16 +37,14 @@ label {
     min-height: 200px;
 }
 
-/*.timer {
-    
-    display: flex;
-    justify-content: center;
-}*/
+.user-message {
+    min-height: 253px;
+}
 
 #time-reading {
     font-size: 2rem;
     font-weight: 600;
-    width: auto;
+    //width: 155px;
     min-height: 50px;
 }
 
