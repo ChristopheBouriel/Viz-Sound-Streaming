@@ -88,7 +88,8 @@ export class VizTrackComponent implements OnInit, OnDestroy {
                                      // après interruption puisque ses instructions s'exécuteront dès que ce dernier aura émis une valeur
         this.goDown = false;
         this.getTendancySubscriptions();
-      },1000);
+        
+      },1200);
     this.started = true;
     this.goDown = true; // Déclanchement de l'animation de début de lecture avec une directive par attribut  
   }
@@ -96,13 +97,13 @@ export class VizTrackComponent implements OnInit, OnDestroy {
   pauseIt() {
     this.audioService.pauseStream(); // Appel de la fonction pauseStream() du service audio.service pour interrompre la lecture
     this.paused = true;
-    this.ids.streaming = false;
+    
   }
 
-  resumeIt() {
-    this.audioService.resumeStream(); // Appel de la fonction resumeStream() du service audio.service pour relancer la lecture
+  resumeIt(initialUserAction) {
+    this.audioService.resumeStream(initialUserAction); // Appel de la fonction resumeStream() du service audio.service pour relancer la lecture
     this.paused = false;
-    this.ids.streaming = true;
+    
     this.ids.clock$.next(this.timer.getSeconds()*1000); // On passe le temps de lecture en millisecondes à l'observable pour qu'il émette cette valeur afin de relancer la capture
                                                         // de données de fréquences
                                                         // Si l'on considère que le modèle doit être la "seule source de vérité", il vaudrait mieux lui passer la valeur de la

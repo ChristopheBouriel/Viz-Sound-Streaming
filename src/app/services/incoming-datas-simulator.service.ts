@@ -32,8 +32,6 @@ export class IncomingDatasSimulatorService {
   t15$= new Subject<number>();
   t16$= new Subject<number>();
 
-  streaming: boolean = true;
-
   private datas: number[];
   private count: number = 0;
   private cacheLastThree = [];
@@ -58,7 +56,7 @@ export class IncomingDatasSimulatorService {
                              // une valeur sera émise, relançant le même enchainement... et ainsi de suite jusqu'à ce que l'une des conditions
                              // du if ne soit plus satisfaite – streaming lorsque l'on met en pause en fonctionnement normal                             
         () => {
-            if (this.streaming && !this.audioService.error$.value && !this.audioService.userMessage$.value) {
+            if (this.audioService.capturing && !this.audioService.error$.value && !this.audioService.userMessage$.value) {
             setTimeout(
             () => {
               this.audioService.analyser.getByteFrequencyData(this.audioService.frequenciesDatas); // On effectue une capture de données de fréquances

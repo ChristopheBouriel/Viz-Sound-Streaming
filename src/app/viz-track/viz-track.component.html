@@ -16,11 +16,11 @@
         </form>
         
 
-        <div class="row mt-5" *ngIf="!errorMsg">
-            <div class="row col-8 mx-auto justify-content-center">            
-                <button id="stopIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="!paused && started" (click)="pauseIt()">Pause</button>
-                <button id="resumeIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="paused && started" (click)="resumeIt()">Resume</button>
-            
+        <div class="buttons row mt-5" *ngIf="!errorMsg">
+            <div class="row col-8 mx-auto justify-content-center" *ngIf="!goDown">            
+                <button id="stopIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="!paused && started && !this.audioService.userActionNeeded" (click)="pauseIt()">Pause</button>
+                <button id="resumeIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="paused && started && !this.audioService.userActionNeeded" (click)="resumeIt('resume')">Resume</button>
+                <button id="restartIt" class="col-10 col-sm-8 col-md-6 mx-auto" *ngIf="started && this.audioService.userActionNeeded" (click)="resumeIt('initialUserAction')">Play</button>
             </div>
         </div>
 

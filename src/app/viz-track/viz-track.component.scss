@@ -27,14 +27,45 @@ h1 {
     font-size: 2rem;
 }
 
+.controls {
+    min-height: 200px;
+}
+
 label {
     color: whitesmoke;
     font-size: 0.8rem;
     padding-left: 5px;
 }
 
-.controls {
-    min-height: 200px;
+input {
+    background-color: rgb(53, 53, 53);
+}
+
+button {
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    text-align: center;
+    font-weight: 600;
+    background-color: rgb(61, 164, 193);
+    height: 30px;
+    color: whitesmoke;
+}
+
+/*.buttons {
+    min-height: 30px;
+}*/
+
+p {
+    font-weight: 400;
+    font-family: Georgia;
+    color: rgb(61, 125, 210);
+    font-size: 0.8rem;
+}
+
+#message-source {
+    margin-top: 20px;
+    min-height: 40px;
 }
 
 .user-message {
@@ -44,7 +75,6 @@ label {
 #time-reading {
     font-size: 2rem;
     font-weight: 600;
-    //width: 155px;
     min-height: 50px;
 }
 
@@ -81,33 +111,6 @@ label {
         }
 }
 
-button {
-    border-radius: 5px;
-    box-shadow: none;
-    border: none;
-    text-align: center;
-    font-weight: 600;
-    background-color: rgb(61, 164, 193);
-    height: 30px;
-    color: whitesmoke;
-}
-
-p {
-    font-weight: 400;
-    font-family: Georgia;
-    color: rgb(61, 125, 210);
-    font-size: 0.8rem;
-}
-
-#message-source {
-    margin-top: 20px;
-    min-height: 40px;
-}
-
-input {
-    background-color: rgb(53, 53, 53);
-}
-
 .tendance {
     display: flex;
     justify-content: space-around;
@@ -130,9 +133,9 @@ input {
 
 @keyframes godown {
     0% {
-      transform: translateY(30px);
+      transform: translateY(80px);
     }
     100% {
-      transform: translateY(200px);
+      transform: translateY(230px);
     }
   }
