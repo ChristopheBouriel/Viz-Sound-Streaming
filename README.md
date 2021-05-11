@@ -18,7 +18,7 @@ You can find the app at the following address :
     https://viz-sound.netlify.app
 
 If you want to be sure not to have CORS policy or mixed content issues, you can use this track :
-    https://res.cloudinary.com/cbpicstore/video/upload/v1620157467/Music/Firecrackers-Inside-Mastered.mp3
+    https://res.cloudinary.com/cbpicstore/video/upload/v1620157467/Music/Firecrackers-Inside.mp3
 
 If your browser have a strict autoplay policy, you may have to click on "Play" after the initial animation, otherwise it will read the stream automatically. Then... Enjoy your little musical rest !
 
