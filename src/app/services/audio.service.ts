@@ -45,6 +45,7 @@ export class AudioService {
         () => {
           this.audio.removeEventListener('pause', initialPauseHandler);
           this.userActionNeeded = false;
+          this.context.resume(); // Il faut appeler la méthode resume() de l'AudioContext pour relancer la progression du temps qui a été suspendue
         }
       );    
       this.audio.removeEventListener('canplaythrough', playHandler); // Si la Promise a été résolue, un event 'canplaythrough'
@@ -112,8 +113,9 @@ export class AudioService {
     if (initialUserAction === 'initialUserAction') { // Si on reçoit une string en paramètre, c'est que la fonction resumeIt() du controleur l'a reçue
       this.userActionNeeded = false;                 // en ayant été appelée suite au clic sur le bouton "Play", qui n'apparait que lorsque le stream a
                                                      // été mis en pause pour de raisons de politique "autoplay". 
-      this.context.resume()                          // Il faut appeler la méthode resume() de l'AudioContext pour relancer la progression du temps qui
-    };                                               // a été suspendue – et l'API n'enverra donc plus de flux même si le stream de l'objet HTMLAudioElement reprend
+      this.context.resume() // Il faut appeler la méthode resume() de l'AudioContext pour relancer la progression du temps qui
+                            // a été suspendue – et l'API n'enverra donc plus de flux même si le stream de l'objet HTMLAudioElement reprend                       
+    };                                               
     this.capturing = true;
     this.audio.play(); // Appel de la méthode play() de l'objet HTMLAudioElement après avoir mis en pause
   }
