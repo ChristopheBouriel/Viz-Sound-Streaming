@@ -47,7 +47,8 @@ export class IncomingDatasSimulatorService {
                         //  - Lorsqu'il émet, il relance un cycle de capture de données de fréquences
                         //  - La valeur qu'il émet est captée dans le controlleur et permet de mettre à jour le temps de lecture
                         // écoulé dans le template – ici aussi c'est volontairement que les propriétés de l'objet HTMLAudioElement
-                        // comme currentTime ne sont pas utilisées                    
+                        // comme currentTime ne sont pas utilisées et il va de soi que le temps de lecture ne peut être exact
+                        // parce qu'il ne tient pas compte du temps d'exécution des instructions                   
                         //
                         // * Cela nécessite aussi une modification dans le controleur : voir les deux lignes de code passées en commentaire
                         //   dans la fonction resumeIt() du composant viz-track.component

@@ -33,7 +33,7 @@
         
     </div>
     <!--Affichage des barres de manière basique-->
-    <!--Modification de la hauteur et animation initiale en utilisant des directives par attribut-->
+    <!--Modification de la hauteur, de la couleur et animation initiale en utilisant des directives par attribut-->
     <div class="row mb-4" [ngClass]="{'moving-down': goDown === true}">
     <div class="viewer col-10 mx-auto" [ngClass]="{'viewing': goDown === false && started === true}">
         <div id="bars-set">
@@ -57,7 +57,7 @@
     </div>
     </div>
     <!--Affichage des barres en utilisant une directive structurelle-->
-    <!--Modification de la hauteur et animation initiale en utilisant des directives par attribut-->
+    <!--Animation initiale en utilisant des directives par attribut-->
     <div class="row my-4" [ngClass]="{'moving-down': goDown === true}">
         <div class="viewer-2 col-10 mx-auto">
             <ul class="list-group">
